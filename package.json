@@ -1,0 +1,39 @@
+{
+  "name": "appreciate",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:lemuelZara/appreciate",
+  "license": "MIT",
+  "description": "API for appreciate people",
+  "author": "Lemuel Coelho Zara",
+  "scripts": {
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.12.4",
+    "@typescript-eslint/eslint-plugin": "^4.27.0",
+    "@typescript-eslint/parser": "^4.27.0",
+    "eslint": "^7.29.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^6.0.0",
+    "jest": "^27.0.4",
+    "lint-staged": "^11.0.0",
+    "prettier": "^2.3.1",
+    "ts-jest": "^27.0.3",
+    "ts-node": "^10.0.0",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.3.4"
+  }
+}
