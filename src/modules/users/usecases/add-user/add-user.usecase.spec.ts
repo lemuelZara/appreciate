@@ -55,4 +55,12 @@ describe('AddUserUseCase', () => {
 
     expect(repository.findByEmail).toBeCalledWith('valid_email');
   });
+
+  test('should be throw if findByEmail returns existent user', async () => {
+    const userData = makeFakeUserData();
+
+    jest.spyOn(repository, 'findByEmail').mockResolvedValue(makeFakeUser());
+
+    await expect(usecase.execute(userData)).rejects.toBeInstanceOf(AppError);
+  });
 });
