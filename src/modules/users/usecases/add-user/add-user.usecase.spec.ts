@@ -45,4 +45,14 @@ describe('AddUserUseCase', () => {
 
     await expect(usecase.execute(userData)).rejects.toBeInstanceOf(AppError);
   });
+
+  test('should be called findByEmail with correct params', async () => {
+    const userData = makeFakeUserData();
+
+    jest.spyOn(repository, 'findByEmail').mockResolvedValue(null);
+
+    await usecase.execute(userData);
+
+    expect(repository.findByEmail).toBeCalledWith('valid_email');
+  });
 });
