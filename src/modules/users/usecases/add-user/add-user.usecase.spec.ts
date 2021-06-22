@@ -63,4 +63,19 @@ describe('AddUserUseCase', () => {
 
     await expect(usecase.execute(userData)).rejects.toBeInstanceOf(AppError);
   });
+
+  test('should be return created user', async () => {
+    const fakeUser = makeFakeUser();
+
+    jest.spyOn(repository, 'findByEmail').mockResolvedValue(null);
+    jest.spyOn(repository, 'add').mockResolvedValue(fakeUser);
+
+    const createdUser = await usecase.execute({
+      name: 'valid_name',
+      email: 'valid_email',
+      admin: true
+    });
+
+    expect(createdUser).toEqual(fakeUser);
+  });
 });
