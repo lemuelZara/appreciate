@@ -1,0 +1,27 @@
+import { AddUserDTO } from '~modules/users/dtos';
+import { User } from '~modules/users/entities';
+import { UserRepositoryProtocols } from '~modules/users/infra/protocols';
+
+import { prisma } from '~shared/infra/database/prisma/client';
+
+export class UserRepository implements UserRepositoryProtocols {
+  public async add({ name, email, admin }: AddUserDTO): Promise<User> {
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        admin
+      }
+    });
+
+    return user;
+  }
+
+  public async findByEmail(email: string): Promise<User | null> {
+    const user = await prisma.user.findFirst({
+      where: { email }
+    });
+
+    return user;
+  }
+}
