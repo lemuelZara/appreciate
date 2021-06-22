@@ -1,0 +1,11 @@
+{
+  "watch": [
+    "src/**/*.ts"
+  ],
+  "ext": "ts, json",
+  "ignore": [
+    ".git",
+    "node_modules/**/node_modules"
+  ],
+  "exec": "ts-node -r tsconfig-paths/register --transpile-only src/shared/infra/http/server.ts"
+}
