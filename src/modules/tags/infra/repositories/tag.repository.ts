@@ -10,4 +10,10 @@ export class TagRepository implements TagRepositoryProtocols {
 
     return tag;
   }
+
+  public async findByName(name: string): Promise<Tag | null> {
+    const tag = await prisma.tag.findFirst({ where: { name } });
+
+    return tag;
+  }
 }
