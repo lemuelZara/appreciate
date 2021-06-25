@@ -3,4 +3,5 @@ import { Tag } from '~modules/tags/entities';
 
 export type TagRepositoryProtocols = {
   add({ name }: AddTagDTO): Promise<Tag>;
+  findByName(name: string): Promise<Tag | null>;
 };
