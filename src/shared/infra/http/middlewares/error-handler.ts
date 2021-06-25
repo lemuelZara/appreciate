@@ -15,8 +15,10 @@ export async function errorHandler(
     });
   }
 
+  console.error('💥 Internal Server Error', err.message);
+
   return httpResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
     status: 'error',
-    message: `Internal Server Error - ${err.message}`
+    message: 'Internal Server Error'
   });
 }

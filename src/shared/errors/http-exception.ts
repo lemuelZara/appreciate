@@ -13,13 +13,6 @@ export class HttpException {
     description?: string,
     statusCode?: number
   ) {
-    if (!error) {
-      return {
-        statusCode,
-        message: description
-      };
-    }
-
     return {
       statusCode,
       message: error,
