@@ -61,5 +61,13 @@ describe('TagRepository', () => {
         where: { name: 'any_name' }
       });
     });
+
+    test('should be throw when findFirst throws', async () => {
+      jest.spyOn(prisma.tag, 'findFirst').mockRejectedValue(new Error());
+
+      const promise = repository.findByName('any_name');
+
+      expect(promise).rejects.toThrow(new Error());
+    });
   });
 });
