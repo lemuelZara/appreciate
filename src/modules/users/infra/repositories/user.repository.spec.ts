@@ -82,5 +82,11 @@ describe('UserRepository', () => {
 
       expect(promise).rejects.toThrow(new Error());
     });
+
+    test('should be successfully return the found user', async () => {
+      jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(mockData);
+
+      expect(await repository.findByEmail('any_email')).toEqual(mockData);
+    });
   });
 });
