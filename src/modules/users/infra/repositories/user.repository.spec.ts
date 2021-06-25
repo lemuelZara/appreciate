@@ -50,5 +50,17 @@ describe('UserRepository', () => {
 
       expect(promise).rejects.toThrow(new Error());
     });
+
+    test('should be successfully return user created', async () => {
+      jest.spyOn(prisma.user, 'create').mockResolvedValue(mockData);
+
+      expect(
+        await repository.add({
+          name: 'any_name',
+          email: 'any_email',
+          admin: true
+        })
+      ).toEqual(mockData);
+    });
   });
 });
