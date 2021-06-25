@@ -63,4 +63,16 @@ describe('UserRepository', () => {
       ).toEqual(mockData);
     });
   });
+
+  describe('findByEmail', () => {
+    test('should be called findFirst with correct params', async () => {
+      jest.spyOn(prisma.user, 'findFirst').mockResolvedValue({} as User);
+
+      await repository.findByEmail('any_email');
+
+      expect(prisma.user.findFirst).toHaveBeenCalledWith({
+        where: { email: 'any_email' }
+      });
+    });
+  });
 });
