@@ -5,7 +5,7 @@ import { UserRepository } from '~modules/users/infra/repositories';
 import { User } from '~modules/users/entities';
 import { AddUserDTO } from '~modules/users/dtos';
 
-import { AppError } from '~shared/errors';
+import { BadRequestException } from '~shared/errors/http-errors';
 
 const makeFakeUserData = (): AddUserDTO => ({
   name: 'valid_name',
@@ -43,7 +43,9 @@ describe('AddUserUseCase', () => {
 
     userData.email = '';
 
-    await expect(usecase.execute(userData)).rejects.toBeInstanceOf(AppError);
+    await expect(usecase.execute(userData)).rejects.toEqual(
+      new BadRequestException('Email is not provided!')
+    );
   });
 
   test('should be called findByEmail with correct params', async () => {
@@ -61,7 +63,9 @@ describe('AddUserUseCase', () => {
 
     jest.spyOn(repository, 'findByEmail').mockResolvedValue(makeFakeUser());
 
-    await expect(usecase.execute(userData)).rejects.toBeInstanceOf(AppError);
+    await expect(usecase.execute(userData)).rejects.toEqual(
+      new BadRequestException('User already exists!')
+    );
   });
 
   test('should be return created user', async () => {

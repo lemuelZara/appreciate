@@ -6,7 +6,10 @@ import { AddUserUseCase } from './add-user.usecase';
 import { HttpStatus } from '~shared/infra/http/enums';
 
 export class AddUserController {
-  public async handle(httpRequest: Request, httpResponse: Response): Promise<Response> {
+  public async handle(
+    httpRequest: Request,
+    httpResponse: Response
+  ): Promise<Response> {
     const { name, email, admin } = httpRequest.body;
 
     const addUserUseCase = container.resolve(AddUserUseCase);

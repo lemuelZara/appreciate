@@ -3,8 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import { UserRepository } from '~modules/users/infra/repositories';
 import { User } from '~modules/users/entities';
 
-import { AppError } from '~shared/errors';
-import { HttpStatus } from '~shared/infra/http/enums';
+import { BadRequestException } from '~shared/errors/http-errors';
 
 type HttpRequest = {
   name: string;
@@ -14,17 +13,19 @@ type HttpRequest = {
 
 @injectable()
 export class AddUserUseCase {
-  constructor(@inject('UserRepository') private userRepository: UserRepository) {}
+  constructor(
+    @inject('UserRepository') private userRepository: UserRepository
+  ) {}
 
   public async execute({ name, email, admin }: HttpRequest): Promise<User> {
     if (!email) {
-      throw new AppError('Email is not provided!', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException('Email is not provided!');
     }
 
     const userAlreadyExists = await this.userRepository.findByEmail(email);
 
     if (userAlreadyExists) {
-      throw new AppError('User already exists!', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException('User already exists!');
     }
 
     const user = await this.userRepository.add({ name, email, admin });
