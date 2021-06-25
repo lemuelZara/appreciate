@@ -74,5 +74,13 @@ describe('UserRepository', () => {
         where: { email: 'any_email' }
       });
     });
+
+    test('should be throw when findFirst throws', async () => {
+      jest.spyOn(prisma.user, 'findFirst').mockRejectedValue(new Error());
+
+      const promise = repository.findByEmail('any_email');
+
+      expect(promise).rejects.toThrow(new Error());
+    });
   });
 });
