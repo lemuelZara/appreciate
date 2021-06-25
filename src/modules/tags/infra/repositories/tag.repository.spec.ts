@@ -50,4 +50,16 @@ describe('TagRepository', () => {
       expect(await repository.add({ name: 'any_name' })).toEqual(mockData);
     });
   });
+
+  describe('findByName', () => {
+    test('should be called findFirst with correct params', async () => {
+      jest.spyOn(prisma.tag, 'findFirst').mockResolvedValue({} as Tag);
+
+      await repository.findByName('any_name');
+
+      expect(prisma.tag.findFirst).toHaveBeenCalledWith({
+        where: { name: 'any_name' }
+      });
+    });
+  });
 });
