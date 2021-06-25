@@ -35,5 +35,13 @@ describe('TagRepository', () => {
         data: { name: 'any_name' }
       });
     });
+
+    test('should be throw when create throws', async () => {
+      jest.spyOn(prisma.tag, 'create').mockRejectedValue(new Error());
+
+      const promise = repository.add(mockData);
+
+      expect(promise).rejects.toThrow(new Error());
+    });
   });
 });
