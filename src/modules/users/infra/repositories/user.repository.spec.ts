@@ -42,5 +42,13 @@ describe('UserRepository', () => {
         data: { name: 'any_name', email: 'any_email', admin: true }
       });
     });
+
+    test('should be throw when create throws', async () => {
+      jest.spyOn(prisma.user, 'create').mockRejectedValue(new Error());
+
+      const promise = repository.add(mockData);
+
+      expect(promise).rejects.toThrow(new Error());
+    });
   });
 });
