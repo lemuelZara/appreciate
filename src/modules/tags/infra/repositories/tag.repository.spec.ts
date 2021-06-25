@@ -69,5 +69,11 @@ describe('TagRepository', () => {
 
       expect(promise).rejects.toThrow(new Error());
     });
+
+    test('should be successfully return the found tag', async () => {
+      jest.spyOn(prisma.tag, 'findFirst').mockResolvedValue(mockData);
+
+      expect(await repository.findByName('any_name')).toEqual(mockData);
+    });
   });
 });
