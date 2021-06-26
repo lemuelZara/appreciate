@@ -53,4 +53,14 @@ describe('AddTagUseCase', () => {
 
     expect(repository.findByName).toBeCalledWith(tagData.name);
   });
+
+  test('should be throw if findByName returns existent tag', async () => {
+    const tagData = makeFakeTagData();
+
+    jest.spyOn(repository, 'findByName').mockResolvedValue(makeFakeTag());
+
+    await expect(usecase.execute(tagData)).rejects.toEqual(
+      new BadRequestException('Tag already exists!')
+    );
+  });
 });
