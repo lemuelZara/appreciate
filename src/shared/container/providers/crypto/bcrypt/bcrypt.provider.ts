@@ -12,6 +12,8 @@ export class BCryptProvider implements CryptoProtocols {
   }
 
   public async compare(value: string, hash: string): Promise<boolean> {
-    throw new Error('Method not implemented.');
+    const hashIsValid = await bcrypt.compare(value, hash);
+
+    return hashIsValid;
   }
 }
