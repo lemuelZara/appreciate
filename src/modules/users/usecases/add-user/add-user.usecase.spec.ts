@@ -14,7 +14,7 @@ const makeFakeUserData = (): AddUserDTO => ({
   name: 'valid_name',
   email: 'valid_email',
   admin: true,
-  password: 'any_password'
+  password: 'valid_password'
 });
 
 const makeFakeUser = (): User => ({
@@ -54,33 +54,40 @@ describe('AddUserUseCase', () => {
   });
 
   test('should be called findByEmail with correct params', async () => {
-    const userData = makeFakeUserData();
-
     jest.spyOn(repository, 'findByEmail').mockResolvedValue(null);
 
-    await usecase.execute(userData);
+    await usecase.execute(makeFakeUserData());
 
-    expect(repository.findByEmail).toBeCalledWith('valid_email');
+    expect(repository.findByEmail).toHaveBeenCalledWith('valid_email');
   });
 
   test('should be throw if findByEmail returns existent user', async () => {
-    const userData = makeFakeUserData();
-
     jest.spyOn(repository, 'findByEmail').mockResolvedValue(makeFakeUser());
 
-    await expect(usecase.execute(userData)).rejects.toEqual(
+    await expect(usecase.execute(makeFakeUserData())).rejects.toEqual(
       new BadRequestException('User already exists!')
     );
   });
 
-  test('should be return created user', async () => {
-    const fakeUser = makeFakeUser();
+  test('should be called add with correct params', async () => {
+    jest.spyOn(repository, 'add').mockResolvedValue(makeFakeUser());
 
+    await usecase.execute(makeFakeUserData());
+
+    expect(repository.add).toHaveBeenCalledWith({
+      name: 'valid_name',
+      email: 'valid_email',
+      admin: true,
+      password: 'valid_password'
+    });
+  });
+
+  test('should be return created user', async () => {
     jest.spyOn(repository, 'findByEmail').mockResolvedValue(null);
-    jest.spyOn(repository, 'add').mockResolvedValue(fakeUser);
+    jest.spyOn(repository, 'add').mockResolvedValue(makeFakeUser());
 
     const createdUser = await usecase.execute(makeFakeUserData());
 
-    expect(createdUser).toEqual(fakeUser);
+    expect(createdUser).toEqual(makeFakeUser());
   });
 });
