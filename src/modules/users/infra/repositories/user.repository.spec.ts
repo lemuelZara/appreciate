@@ -13,6 +13,7 @@ describe('UserRepository', () => {
 
     prisma.user.create = jest.fn();
     prisma.user.findFirst = jest.fn();
+    prisma.user.findUnique = jest.fn();
 
     mockData = {
       id: 'any_id',
@@ -87,6 +88,26 @@ describe('UserRepository', () => {
       jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(mockData);
 
       expect(await repository.findByEmail('any_email')).toEqual(mockData);
+    });
+  });
+
+  describe('findById', () => {
+    test('should be called findUnique with correct params', async () => {
+      jest.spyOn(prisma.user, 'findUnique').mockResolvedValue({} as User);
+
+      await repository.findById('any_id');
+
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        where: { id: 'any_id' }
+      });
+    });
+
+    test('should be throw when findUnique throws', async () => {
+      jest.spyOn(prisma.user, 'findUnique').mockRejectedValue(new Error());
+
+      const promise = repository.findById('any_id');
+
+      expect(promise).rejects.toThrow(new Error());
     });
   });
 });
