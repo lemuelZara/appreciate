@@ -7,10 +7,14 @@ import { AddUserDTO } from '~modules/users/dtos';
 
 import { BadRequestException } from '~shared/errors/http-errors';
 
+const createdAt = new Date();
+const updatedAt = new Date();
+
 const makeFakeUserData = (): AddUserDTO => ({
   name: 'valid_name',
   email: 'valid_email',
-  admin: true
+  admin: true,
+  password: 'any_password'
 });
 
 const makeFakeUser = (): User => ({
@@ -18,8 +22,9 @@ const makeFakeUser = (): User => ({
   name: 'valid_name',
   email: 'valid_email',
   admin: true,
-  createdAt: new Date(),
-  updatedAt: new Date()
+  password: 'valid_password',
+  createdAt,
+  updatedAt
 });
 
 describe('AddUserUseCase', () => {
@@ -74,11 +79,7 @@ describe('AddUserUseCase', () => {
     jest.spyOn(repository, 'findByEmail').mockResolvedValue(null);
     jest.spyOn(repository, 'add').mockResolvedValue(fakeUser);
 
-    const createdUser = await usecase.execute({
-      name: 'valid_name',
-      email: 'valid_email',
-      admin: true
-    });
+    const createdUser = await usecase.execute(makeFakeUserData());
 
     expect(createdUser).toEqual(fakeUser);
   });

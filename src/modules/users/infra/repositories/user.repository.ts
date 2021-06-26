@@ -5,12 +5,18 @@ import { UserRepositoryProtocols } from '~modules/users/infra/protocols';
 import { prisma } from '~shared/infra/database/prisma/client';
 
 export class UserRepository implements UserRepositoryProtocols {
-  public async add({ name, email, admin }: AddUserDTO): Promise<User> {
+  public async add({
+    name,
+    email,
+    admin,
+    password
+  }: AddUserDTO): Promise<User> {
     const user = await prisma.user.create({
       data: {
         name,
         email,
-        admin
+        admin,
+        password
       }
     });
 

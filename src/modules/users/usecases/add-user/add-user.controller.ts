@@ -10,11 +10,11 @@ export class AddUserController {
     httpRequest: Request,
     httpResponse: Response
   ): Promise<Response> {
-    const { name, email, admin } = httpRequest.body;
+    const { name, email, admin, password } = httpRequest.body;
 
     const addUserUseCase = container.resolve(AddUserUseCase);
 
-    const user = await addUserUseCase.execute({ name, email, admin });
+    const user = await addUserUseCase.execute({ name, email, admin, password });
 
     return httpResponse.status(HttpStatus.CREATED).json(user);
   }

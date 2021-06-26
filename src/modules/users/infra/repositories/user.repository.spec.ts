@@ -20,6 +20,7 @@ describe('UserRepository', () => {
       name: 'any_name',
       email: 'any_email',
       admin: true,
+      password: 'any_password',
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -36,11 +37,17 @@ describe('UserRepository', () => {
       await repository.add({
         name: 'any_name',
         email: 'any_email',
-        admin: true
+        admin: true,
+        password: 'any_password'
       });
 
       expect(prisma.user.create).toHaveBeenCalledWith({
-        data: { name: 'any_name', email: 'any_email', admin: true }
+        data: {
+          name: 'any_name',
+          email: 'any_email',
+          admin: true,
+          password: 'any_password'
+        }
       });
     });
 
@@ -59,7 +66,8 @@ describe('UserRepository', () => {
         await repository.add({
           name: 'any_name',
           email: 'any_email',
-          admin: true
+          admin: true,
+          password: 'any_password'
         })
       ).toEqual(mockData);
     });

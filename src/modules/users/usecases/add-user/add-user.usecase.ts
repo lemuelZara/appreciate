@@ -9,6 +9,7 @@ type HttpRequest = {
   name: string;
   email: string;
   admin?: boolean;
+  password: string;
 };
 
 @injectable()
@@ -17,7 +18,12 @@ export class AddUserUseCase {
     @inject('UserRepository') private userRepository: UserRepository
   ) {}
 
-  public async execute({ name, email, admin }: HttpRequest): Promise<User> {
+  public async execute({
+    name,
+    email,
+    admin,
+    password
+  }: HttpRequest): Promise<User> {
     if (!email) {
       throw new BadRequestException('Email is not provided!');
     }
@@ -28,7 +34,12 @@ export class AddUserUseCase {
       throw new BadRequestException('User already exists!');
     }
 
-    const user = await this.userRepository.add({ name, email, admin });
+    const user = await this.userRepository.add({
+      name,
+      email,
+      admin,
+      password
+    });
 
     return user;
   }
