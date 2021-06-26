@@ -24,4 +24,10 @@ export class UserRepository implements UserRepositoryProtocols {
 
     return user;
   }
+
+  public async findById(id: string): Promise<User | null> {
+    const user = await prisma.user.findUnique({ where: { id } });
+
+    return user;
+  }
 }
