@@ -29,4 +29,14 @@ describe('BCryptProvider', () => {
 
     expect(hash).toBe('hash');
   });
+
+  test('Should throw if hash throws', async () => {
+    jest.spyOn(bcrypt, 'hash').mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const hashPromise = bcryptProvider.hash('any_value');
+
+    await expect(hashPromise).rejects.toThrow();
+  });
 });
