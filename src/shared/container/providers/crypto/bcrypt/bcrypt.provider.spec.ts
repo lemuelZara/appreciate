@@ -5,6 +5,9 @@ import { BCryptProvider } from './bcrypt.provider';
 jest.mock('bcrypt', () => ({
   async hash(): Promise<string> {
     return new Promise((resolve) => resolve('hash'));
+  },
+  async compare(): Promise<boolean> {
+    return new Promise((resolve) => resolve(true));
   }
 }));
 
@@ -38,5 +41,13 @@ describe('BCryptProvider', () => {
     const hashPromise = bcryptProvider.hash('any_value');
 
     await expect(hashPromise).rejects.toThrow();
+  });
+
+  test('should call compare with correct params', async () => {
+    const compareSpy = jest.spyOn(bcrypt, 'compare');
+
+    await bcryptProvider.compare('any_value', 'any_hash');
+
+    expect(compareSpy).toHaveBeenCalledWith('any_value', 'any_hash');
   });
 });
