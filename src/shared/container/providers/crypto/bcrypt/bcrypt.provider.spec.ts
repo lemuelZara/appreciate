@@ -23,4 +23,10 @@ describe('BCryptProvider', () => {
 
     expect(hashSpy).toHaveBeenCalledWith('any_value', salt);
   });
+
+  test('Should return a valid hash on hash success', async () => {
+    const hash = await bcryptProvider.hash('any_value');
+
+    expect(hash).toBe('hash');
+  });
 });
