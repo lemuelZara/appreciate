@@ -50,4 +50,10 @@ describe('BCryptProvider', () => {
 
     expect(compareSpy).toHaveBeenCalledWith('any_value', 'any_hash');
   });
+
+  test('Should return true when compare succeeds', async () => {
+    const hash = await bcryptProvider.compare('any_value', 'any_hash');
+
+    expect(hash).toBeTruthy();
+  });
 });
