@@ -6,6 +6,8 @@ import { User } from '~modules/users/entities';
 import { AddUserDTO } from '~modules/users/dtos';
 
 import { BadRequestException } from '~shared/errors/http-errors';
+import { CryptoProtocols } from '~shared/container/providers/crypto/protocols';
+import { BCryptProvider } from '~shared/container/providers/crypto/bcrypt/bcrypt.provider';
 
 const createdAt = new Date();
 const updatedAt = new Date();
@@ -30,10 +32,14 @@ const makeFakeUser = (): User => ({
 describe('AddUserUseCase', () => {
   let usecase: AddUserUseCase;
   let repository: UserRepositoryProtocols;
+  let provider: CryptoProtocols;
 
   beforeEach(async () => {
     repository = new UserRepository();
-    usecase = new AddUserUseCase(repository);
+    provider = new BCryptProvider(12);
+    usecase = new AddUserUseCase(repository, provider);
+
+    provider.hash = jest.fn();
 
     repository.add = jest.fn();
     repository.findByEmail = jest.fn();
@@ -69,7 +75,16 @@ describe('AddUserUseCase', () => {
     );
   });
 
+  test('should be called hash with correct params', async () => {
+    const hasherSpy = jest.spyOn(provider, 'hash');
+
+    await usecase.execute(makeFakeUserData());
+
+    expect(hasherSpy).toHaveBeenCalledWith('valid_password');
+  });
+
   test('should be called add with correct params', async () => {
+    jest.spyOn(provider, 'hash').mockResolvedValueOnce('hashed_password');
     jest.spyOn(repository, 'add').mockResolvedValue(makeFakeUser());
 
     await usecase.execute(makeFakeUserData());
@@ -78,7 +93,7 @@ describe('AddUserUseCase', () => {
       name: 'valid_name',
       email: 'valid_email',
       admin: true,
-      password: 'valid_password'
+      password: 'hashed_password'
     });
   });
 
