@@ -63,4 +63,15 @@ describe('AddTagUseCase', () => {
       new BadRequestException('Tag already exists!')
     );
   });
+
+  test('should be return created tag', async () => {
+    const fakeTag = makeFakeTag();
+
+    jest.spyOn(repository, 'findByName').mockResolvedValue(null);
+    jest.spyOn(repository, 'add').mockResolvedValue(fakeTag);
+
+    const createdTag = await usecase.execute({ name: 'valid_name' });
+
+    expect(createdTag).toEqual(fakeTag);
+  });
 });
