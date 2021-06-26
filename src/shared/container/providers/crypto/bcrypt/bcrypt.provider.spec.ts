@@ -56,4 +56,14 @@ describe('BCryptProvider', () => {
 
     expect(hash).toBeTruthy();
   });
+
+  test('Should throw if hash throws', async () => {
+    jest.spyOn(bcrypt, 'compare').mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const hashPromise = bcryptProvider.compare('any_value', 'any_hash');
+
+    await expect(hashPromise).rejects.toThrow();
+  });
 });
