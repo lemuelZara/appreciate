@@ -4,6 +4,7 @@ import { UserRepository } from '~modules/users/infra/repositories';
 import { User } from '~modules/users/entities';
 
 import { BadRequestException } from '~shared/errors/http-errors';
+import { CryptoProtocols } from '~shared/container/providers/crypto/protocols';
 
 type HttpRequest = {
   name: string;
@@ -15,7 +16,8 @@ type HttpRequest = {
 @injectable()
 export class AddUserUseCase {
   constructor(
-    @inject('UserRepository') private userRepository: UserRepository
+    @inject('UserRepository') private userRepository: UserRepository,
+    @inject('CryptoProvider') private cryptoProvider: CryptoProtocols
   ) {}
 
   public async execute({
@@ -34,11 +36,13 @@ export class AddUserUseCase {
       throw new BadRequestException('User already exists!');
     }
 
+    const hashedPassword = await this.cryptoProvider.hash(password);
+
     const user = await this.userRepository.add({
       name,
       email,
       admin,
-      password
+      password: hashedPassword
     });
 
     return user;
