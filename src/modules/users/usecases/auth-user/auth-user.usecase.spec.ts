@@ -81,4 +81,15 @@ describe('AuthUserUseCase', () => {
       'valid_password'
     );
   });
+
+  test('should be throw if compare returns false', async () => {
+    jest.spyOn(repository, 'findByEmail').mockResolvedValueOnce(makeFakeUser());
+    jest.spyOn(cryptoProvider, 'compare').mockResolvedValueOnce(false);
+
+    const promise = usecase.execute(makeFakeAuthData());
+
+    await expect(promise).rejects.toEqual(
+      new BadRequestException('Incorrect credentials, try again.')
+    );
+  });
 });
