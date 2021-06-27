@@ -75,5 +75,20 @@ describe('ComplimentRepository', () => {
 
       expect(promise).rejects.toThrow(new Error());
     });
+
+    test('should be successfully return compliment created', async () => {
+      jest
+        .spyOn(prisma.compliment, 'create')
+        .mockResolvedValue(makeFakeCompliment());
+
+      expect(
+        await repository.add({
+          message: 'any_message',
+          tagId: 'any_tagId',
+          userReceiverId: 'any_userReceivedId',
+          userSenderId: 'any_userSenderId'
+        })
+      ).toEqual(makeFakeCompliment());
+    });
   });
 });
