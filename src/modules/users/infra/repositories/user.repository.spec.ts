@@ -4,9 +4,33 @@ import { User } from '~modules/users/entities';
 
 import { prisma } from '~shared/infra/database/prisma/client';
 
+const createdAt = new Date();
+const updatedAt = new Date();
+
+const makeFakeUser = (): User => ({
+  id: 'any_id',
+  name: 'any_name',
+  email: 'any_email',
+  admin: true,
+  password: 'any_password',
+  createdAt,
+  updatedAt
+});
+
+const makeFakeAllUsers = (): User[] => [
+  {
+    id: 'any_id',
+    name: 'any_name',
+    email: 'any_email',
+    admin: true,
+    password: 'any_password',
+    createdAt,
+    updatedAt
+  }
+];
+
 describe('UserRepository', () => {
   let repository: UserRepository;
-  let mockData: User;
 
   beforeEach(() => {
     repository = new UserRepository();
@@ -14,16 +38,6 @@ describe('UserRepository', () => {
     prisma.user.create = jest.fn();
     prisma.user.findFirst = jest.fn();
     prisma.user.findUnique = jest.fn();
-
-    mockData = {
-      id: 'any_id',
-      name: 'any_name',
-      email: 'any_email',
-      admin: true,
-      password: 'any_password',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
   });
 
   test('should be defined', () => {
@@ -54,13 +68,13 @@ describe('UserRepository', () => {
     test('should be throw when create throws', async () => {
       jest.spyOn(prisma.user, 'create').mockRejectedValue(new Error());
 
-      const promise = repository.add(mockData);
+      const promise = repository.add(makeFakeUser());
 
       expect(promise).rejects.toThrow(new Error());
     });
 
     test('should be successfully return user created', async () => {
-      jest.spyOn(prisma.user, 'create').mockResolvedValue(mockData);
+      jest.spyOn(prisma.user, 'create').mockResolvedValue(makeFakeUser());
 
       expect(
         await repository.add({
@@ -69,7 +83,7 @@ describe('UserRepository', () => {
           admin: true,
           password: 'any_password'
         })
-      ).toEqual(mockData);
+      ).toEqual(makeFakeUser());
     });
   });
 
@@ -93,9 +107,9 @@ describe('UserRepository', () => {
     });
 
     test('should be successfully return the found user', async () => {
-      jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(mockData);
+      jest.spyOn(prisma.user, 'findFirst').mockResolvedValue(makeFakeUser());
 
-      expect(await repository.findByEmail('any_email')).toEqual(mockData);
+      expect(await repository.findByEmail('any_email')).toEqual(makeFakeUser());
     });
   });
 
@@ -119,9 +133,25 @@ describe('UserRepository', () => {
     });
 
     test('should be successfully return the found user', async () => {
-      jest.spyOn(prisma.user, 'findUnique').mockResolvedValue(mockData);
+      jest.spyOn(prisma.user, 'findUnique').mockResolvedValue(makeFakeUser());
 
-      expect(await repository.findById('any_email')).toEqual(mockData);
+      expect(await repository.findById('any_email')).toEqual(makeFakeUser());
+    });
+  });
+
+  describe('findAll', () => {
+    test('should be throw when findMany throws', async () => {
+      jest.spyOn(prisma.user, 'findMany').mockRejectedValue(new Error());
+
+      const promise = repository.findAll();
+
+      expect(promise).rejects.toThrow(new Error());
+    });
+
+    test('should be successfully return all users', async () => {
+      jest.spyOn(prisma.user, 'findMany').mockResolvedValue(makeFakeAllUsers());
+
+      expect(await repository.findAll()).toEqual(makeFakeAllUsers());
     });
   });
 });
