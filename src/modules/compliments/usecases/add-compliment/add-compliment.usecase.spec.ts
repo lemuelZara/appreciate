@@ -80,4 +80,12 @@ describe('AddComplimentUseCase', () => {
       'valid_userReceiverId'
     );
   });
+
+  test('should be throw if user receiver not exists', async () => {
+    jest.spyOn(userRepository, 'findById').mockResolvedValueOnce(null);
+
+    await expect(usecase.execute(makeFakeComplimentData())).rejects.toEqual(
+      new BadRequestException('User Receiver does not exists!')
+    );
+  });
 });
