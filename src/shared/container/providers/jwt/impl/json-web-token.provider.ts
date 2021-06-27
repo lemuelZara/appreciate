@@ -18,6 +18,8 @@ export class JsonWebTokenProvider implements JWTProtocols {
     token: string,
     secret: string
   ): T {
-    throw new Error('Method not implemented.');
+    const decoded = verify(token, secret) as unknown as T;
+
+    return decoded;
   }
 }
