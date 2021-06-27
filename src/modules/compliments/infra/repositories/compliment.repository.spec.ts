@@ -3,6 +3,9 @@ import { ComplimentRepository } from './compliment.repository';
 import { Compliment } from '~modules/compliments/entities';
 import { AddComplimentDTO } from '~modules/compliments/dtos';
 
+import { User } from '~modules/users/entities';
+import { Tag } from '~modules/tags/entities';
+
 import { prisma } from '~shared/infra/database/prisma/client';
 
 const createdAt = new Date();
@@ -25,6 +28,36 @@ const makeFakeCompliment = (): Compliment => ({
   updatedAt
 });
 
+const makeFakeUserReceiveCompliments = (): (Compliment & {
+  userSender: User;
+  tag: Tag;
+})[] => [
+  {
+    id: 'valid_id',
+    message: 'valid_message',
+    tagId: 'valid_tagId',
+    userReceiverId: 'valid_userReceiverId',
+    userSenderId: 'valid_userSenderId',
+    createdAt,
+    updatedAt,
+    tag: {
+      id: 'valid_id',
+      name: 'valid_name',
+      createdAt,
+      updatedAt
+    },
+    userSender: {
+      id: 'valid_id',
+      name: 'valid_name',
+      email: 'valid_email',
+      password: 'valid_password',
+      admin: true,
+      createdAt,
+      updatedAt
+    }
+  }
+];
+
 describe('ComplimentRepository', () => {
   let repository: ComplimentRepository;
 
@@ -32,6 +65,7 @@ describe('ComplimentRepository', () => {
     repository = new ComplimentRepository();
 
     prisma.compliment.create = jest.fn();
+    prisma.compliment.findMany = jest.fn();
   });
 
   test('should be defined', () => {
@@ -89,6 +123,42 @@ describe('ComplimentRepository', () => {
           userSenderId: 'any_userSenderId'
         })
       ).toEqual(makeFakeCompliment());
+    });
+  });
+
+  describe('findUserReceiveCompliments', () => {
+    test('should be called findMany with correct params', async () => {
+      jest
+        .spyOn(prisma.compliment, 'findMany')
+        .mockResolvedValue([] as Compliment[]);
+
+      await repository.findUserReceiveCompliments('any_userId');
+
+      expect(prisma.compliment.findMany).toHaveBeenCalledWith({
+        where: { userReceiverId: 'any_userId' },
+        include: {
+          tag: true,
+          userSender: true
+        }
+      });
+    });
+
+    test('should be throw when findMany throws', async () => {
+      jest.spyOn(prisma.compliment, 'findMany').mockRejectedValue(new Error());
+
+      const promise = repository.findUserReceiveCompliments('any_userId');
+
+      expect(promise).rejects.toThrow(new Error());
+    });
+
+    test('should be successfully return user received compliments', async () => {
+      jest
+        .spyOn(prisma.compliment, 'findMany')
+        .mockResolvedValue(makeFakeUserReceiveCompliments());
+
+      expect(await repository.findUserReceiveCompliments('any_userId')).toEqual(
+        makeFakeUserReceiveCompliments()
+      );
     });
   });
 });
