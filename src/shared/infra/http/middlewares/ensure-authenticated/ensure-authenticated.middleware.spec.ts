@@ -78,4 +78,16 @@ describe('EnsureAuthenticatedMiddleware', () => {
       )
     );
   });
+
+  test('should be authorized', async () => {
+    const httpRequest = makeFakeHttpRequest();
+
+    jest.spyOn(provider, 'decodeToken').mockReturnValueOnce({
+      sub: 'any_userId'
+    });
+
+    await middleware.handle(httpRequest, httpResponse, next);
+
+    expect(next).toHaveBeenCalled();
+  });
 });
