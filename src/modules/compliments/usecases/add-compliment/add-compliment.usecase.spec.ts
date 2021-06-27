@@ -88,4 +88,17 @@ describe('AddComplimentUseCase', () => {
       new BadRequestException('User Receiver does not exists!')
     );
   });
+
+  test('should be return created compliment', async () => {
+    jest
+      .spyOn(userRepository, 'findById')
+      .mockResolvedValueOnce(makeFakeUser());
+    jest
+      .spyOn(complimentRepository, 'add')
+      .mockResolvedValueOnce(makeFakeCompliment());
+
+    const createdCompliment = await usecase.execute(makeFakeComplimentData());
+
+    expect(createdCompliment).toEqual(makeFakeCompliment());
+  });
 });
