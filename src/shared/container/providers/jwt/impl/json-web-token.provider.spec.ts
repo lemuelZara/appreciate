@@ -73,4 +73,14 @@ describe('JsonWebTokenProvider', () => {
 
     expect(decodedToken).toBe('any_decoded_token');
   });
+
+  test('should throw if verify throws', async () => {
+    jest.spyOn(jwt, 'verify').mockImplementationOnce(() => {
+      return new Error();
+    });
+
+    const decoded = provider.decodeToken('any_token', 'secret');
+
+    expect(decoded).toStrictEqual(new Error());
+  });
 });
