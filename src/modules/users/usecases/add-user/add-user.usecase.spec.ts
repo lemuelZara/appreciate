@@ -7,7 +7,7 @@ import { AddUserDTO } from '~modules/users/dtos';
 
 import { BadRequestException } from '~shared/errors/http-errors';
 import { CryptoProtocols } from '~shared/container/providers/crypto/protocols';
-import { BCryptProvider } from '~shared/container/providers/crypto/bcrypt/bcrypt.provider';
+import { BCryptProvider } from '~shared/container/providers/crypto/bcrypt';
 
 const createdAt = new Date();
 const updatedAt = new Date();
