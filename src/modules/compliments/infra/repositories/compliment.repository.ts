@@ -28,4 +28,19 @@ export class ComplimentRepository implements ComplimentRepositoryProtocols {
 
     return compliment;
   }
+
+  public async findUserReceiveCompliments(
+    userId: string
+  ): Promise<Compliment[]> {
+    const compliments = await prisma.compliment.findMany({
+      where: { userReceiverId: userId },
+      include: {
+        tag: true,
+        userReceiver: true,
+        userSender: true
+      }
+    });
+
+    return compliments;
+  }
 }
