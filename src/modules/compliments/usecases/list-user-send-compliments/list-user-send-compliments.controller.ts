@@ -2,20 +2,20 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import { HttpStatus } from '~shared/infra/http/enums';
 
-import { ListUserReceiveComplimentsUseCase } from './list-user-receive-compliments.usecase';
+import { ListUserSendComplimentsUseCase } from './list-user-send-compliments.usecase';
 
-export class ListUserReceiveComplimentsController {
+export class ListUserSendComplimentsController {
   public async handle(
     httpRequest: Request,
     httpResponse: Response
   ): Promise<Response> {
     const { id: userId } = httpRequest.user;
 
-    const listUserReceiveComplimentsUseCase = container.resolve(
-      ListUserReceiveComplimentsUseCase
+    const listUserSendComplimentsUseCase = container.resolve(
+      ListUserSendComplimentsUseCase
     );
 
-    const compliments = await listUserReceiveComplimentsUseCase.execute({
+    const compliments = await listUserSendComplimentsUseCase.execute({
       userId
     });
 

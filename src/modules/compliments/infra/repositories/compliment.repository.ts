@@ -36,8 +36,19 @@ export class ComplimentRepository implements ComplimentRepositoryProtocols {
       where: { userReceiverId: userId },
       include: {
         tag: true,
-        userReceiver: true,
         userSender: true
+      }
+    });
+
+    return compliments;
+  }
+
+  public async findUserSendCompliments(userId: string): Promise<Compliment[]> {
+    const compliments = await prisma.compliment.findMany({
+      where: { userSenderId: userId },
+      include: {
+        tag: true,
+        userReceiver: true
       }
     });
 
