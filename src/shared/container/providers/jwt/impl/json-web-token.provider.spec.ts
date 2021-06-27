@@ -5,6 +5,9 @@ import { JsonWebTokenProvider } from './json-web-token.provider';
 jest.mock('jsonwebtoken', () => ({
   sign(): string {
     return 'any_token';
+  },
+  verify(): string {
+    return 'any_decoded_token';
   }
 }));
 
@@ -55,5 +58,13 @@ describe('JsonWebTokenProvider', () => {
     });
 
     expect(provider.generateToken).toThrow();
+  });
+
+  test('should call verify with correct params', async () => {
+    const signSpy = jest.spyOn(jwt, 'verify');
+
+    provider.decodeToken('any_token', 'secret');
+
+    expect(signSpy).toHaveBeenCalledWith('any_token', 'secret');
   });
 });
