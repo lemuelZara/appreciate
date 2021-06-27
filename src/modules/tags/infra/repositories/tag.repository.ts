@@ -16,4 +16,10 @@ export class TagRepository implements TagRepositoryProtocols {
 
     return tag;
   }
+
+  public async findAll(): Promise<Tag[]> {
+    const tags = await prisma.tag.findMany();
+
+    return tags;
+  }
 }
