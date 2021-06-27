@@ -67,4 +67,10 @@ describe('JsonWebTokenProvider', () => {
 
     expect(signSpy).toHaveBeenCalledWith('any_token', 'secret');
   });
+
+  test('should return a decoded token on verify success', async () => {
+    const decodedToken = provider.decodeToken('any_token', 'secret');
+
+    expect(decodedToken).toBe('any_decoded_token');
+  });
 });
