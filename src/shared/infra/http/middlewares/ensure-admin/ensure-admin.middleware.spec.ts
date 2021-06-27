@@ -67,4 +67,14 @@ describe('EnsureAdmindMiddleware', () => {
       middleware.handle(httpRequest, httpResponse, next)
     ).rejects.toEqual(new BadRequestException('User is not admin!'));
   });
+
+  test('should be authorized', async () => {
+    const httpRequest = makeFakeHttpRequest();
+
+    jest.spyOn(repository, 'findById').mockResolvedValueOnce(makeFakeUser());
+
+    await middleware.handle(httpRequest, httpResponse, next);
+
+    expect(next).toHaveBeenCalled();
+  });
 });
