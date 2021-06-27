@@ -67,5 +67,13 @@ describe('ComplimentRepository', () => {
         }
       });
     });
+
+    test('should be throw when create throws', async () => {
+      jest.spyOn(prisma.compliment, 'create').mockRejectedValue(new Error());
+
+      const promise = repository.add(makeFakeComplimentData());
+
+      expect(promise).rejects.toThrow(new Error());
+    });
   });
 });
