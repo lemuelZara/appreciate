@@ -59,4 +59,14 @@ describe('AuthUserUseCase', () => {
 
     expect(repository.findByEmail).toHaveBeenCalledWith('any_email');
   });
+
+  test('should be throw if findByEmail not return existent user', async () => {
+    jest.spyOn(repository, 'findByEmail').mockResolvedValueOnce(null);
+
+    const promise = usecase.execute(makeFakeAuthData());
+
+    await expect(promise).rejects.toEqual(
+      new BadRequestException('Incorrect credentials, try again.')
+    );
+  });
 });
