@@ -44,4 +44,16 @@ describe('JsonWebTokenProvider', () => {
 
     expect(token).toBe('any_token');
   });
+
+  test('should throw if sign throws', async () => {
+    jest.spyOn(jwt, 'sign').mockImplementation(() => new Error());
+
+    provider.generateToken('secret', {
+      algorithm: 'RS256',
+      subject: 'any_id',
+      expiresIn: '1d'
+    });
+
+    expect(provider.generateToken).toThrow();
+  });
 });
