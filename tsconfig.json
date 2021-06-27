@@ -3,7 +3,7 @@
     "target": "es5",
     "module": "commonjs",
     "rootDir": "./",
-    "strict": true,
+    "strict": false,
     "baseUrl": "./src",
     "paths": {
       "~modules/*": [
@@ -28,6 +28,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
+    "strictPropertyInitialization": false,
     "strictNullChecks": true
   },
   "exclude": [
