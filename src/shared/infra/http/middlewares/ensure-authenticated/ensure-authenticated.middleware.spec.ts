@@ -64,4 +64,18 @@ describe('EnsureAuthenticatedMiddleware', () => {
       'any_secret'
     );
   });
+
+  test('should be throw if invalid token is provided', async () => {
+    const httpRequest = makeFakeHttpRequest();
+
+    httpRequest.headers.authorization = 'invalid_token';
+
+    await expect(
+      middleware.handle(httpRequest, httpResponse, next)
+    ).rejects.toEqual(
+      new UnauthorizedException(
+        'Invalid authentication token, please log in a new session.'
+      )
+    );
+  });
 });
