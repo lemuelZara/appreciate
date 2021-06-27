@@ -10,7 +10,8 @@ export class AddComplimentController {
     httpRequest: Request,
     httpResponse: Response
   ): Promise<Response> {
-    const { message, tagId, userSenderId, userReceiverId } = httpRequest.body;
+    const { id: userSenderId } = httpRequest.user;
+    const { message, tagId, userReceiverId } = httpRequest.body;
 
     const addComplimentUseCase = container.resolve(AddComplimentUseCase);
 

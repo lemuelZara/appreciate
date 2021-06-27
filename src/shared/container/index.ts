@@ -14,6 +14,7 @@ import { CryptoProtocols } from '~shared/container/providers/crypto/protocols';
 
 import { JWTProtocols } from '~shared/container/providers/jwt/protocols';
 import { JsonWebTokenProvider } from './providers/jwt/impl/json-web-token.provider';
+import { EnsureAuthenticatedMiddleware } from '~shared/infra/http/middlewares/ensure-authenticated/ensure-authenticated.middleware';
 
 container.registerSingleton<UserRepositoryProtocols>(
   'UserRepository',
