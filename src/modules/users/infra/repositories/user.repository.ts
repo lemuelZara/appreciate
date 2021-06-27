@@ -36,4 +36,10 @@ export class UserRepository implements UserRepositoryProtocols {
 
     return user;
   }
+
+  public async findAll(): Promise<User[]> {
+    const users = await prisma.user.findMany();
+
+    return users;
+  }
 }
