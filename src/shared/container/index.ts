@@ -9,6 +9,9 @@ import { UserRepository } from '~modules/users/infra/repositories';
 import { BCryptProvider } from '~shared/container/providers/crypto/bcrypt';
 import { CryptoProtocols } from '~shared/container/providers/crypto/protocols';
 
+import { JWTProtocols } from '~shared/container/providers/jwt/protocols';
+import { JsonWebTokenProvider } from './providers/jwt/impl/json-web-token.provider';
+
 container.registerSingleton<UserRepositoryProtocols>(
   'UserRepository',
   UserRepository
@@ -23,3 +26,5 @@ container.registerInstance<CryptoProtocols>(
   'CryptoProvider',
   new BCryptProvider(12)
 );
+
+container.registerSingleton<JWTProtocols>('JWTProvider', JsonWebTokenProvider);
