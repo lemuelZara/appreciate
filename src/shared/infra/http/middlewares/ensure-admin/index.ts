@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 
 import { EnsureAdminMiddleware } from './ensure-admin.middleware';
 
-export async function ensureAuthenticated(
+export async function ensureAdmin(
   httpRequest: Request,
   httpResponse: Response,
   next: NextFunction
