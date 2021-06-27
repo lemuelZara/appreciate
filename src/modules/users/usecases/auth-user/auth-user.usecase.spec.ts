@@ -92,4 +92,15 @@ describe('AuthUserUseCase', () => {
       new BadRequestException('Incorrect credentials, try again.')
     );
   });
+
+  test('should be return a token on success', async () => {
+    jest.spyOn(repository, 'findByEmail').mockResolvedValueOnce(makeFakeUser());
+    jest.spyOn(cryptoProvider, 'compare').mockResolvedValueOnce(true);
+    jest.spyOn(jwtProvider, 'generateToken').mockReturnValueOnce('any_token');
+
+    const response = await usecase.execute(makeFakeAuthData());
+
+    expect(response).toHaveProperty('token');
+    expect(response.token).toBe('any_token');
+  });
 });
