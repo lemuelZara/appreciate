@@ -5,6 +5,7 @@ import { Compliment } from '~modules/compliments/entities';
 import { ComplimentRepositoryProtocols } from '~modules/compliments/infra/protocols';
 import { ComplimentRepository } from '~modules/compliments/infra/repositories';
 
+import { User } from '~modules/users/entities';
 import { UserRepositoryProtocols } from '~modules/users/infra/protocols';
 import { UserRepository } from '~modules/users/infra/repositories';
 
@@ -26,6 +27,16 @@ const makeFakeCompliment = (): Compliment => ({
   tagId: 'valid_tagId',
   userSenderId: 'valid_userSenderId',
   userReceiverId: 'valid_userReceiverId',
+  createdAt,
+  updatedAt
+});
+
+const makeFakeUser = (): User => ({
+  id: 'valid_id',
+  name: 'valid_name',
+  email: 'valid_email',
+  admin: true,
+  password: 'valid_password',
   createdAt,
   updatedAt
 });
@@ -55,6 +66,18 @@ describe('AddComplimentUseCase', () => {
 
     await expect(usecase.execute(complimentData)).rejects.toEqual(
       new BadRequestException('Incorrect User Receiver/Sender!')
+    );
+  });
+
+  test('should be called findById with correct params', async () => {
+    jest
+      .spyOn(userRepository, 'findById')
+      .mockResolvedValueOnce(makeFakeUser());
+
+    await usecase.execute(makeFakeComplimentData());
+
+    expect(userRepository.findById).toHaveBeenCalledWith(
+      'valid_userReceiverId'
     );
   });
 });
