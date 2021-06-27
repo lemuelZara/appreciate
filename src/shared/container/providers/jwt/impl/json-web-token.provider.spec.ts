@@ -34,4 +34,14 @@ describe('JsonWebTokenProvider', () => {
       expiresIn: '1d'
     });
   });
+
+  test('should return a token on sign success', async () => {
+    const token = provider.generateToken('secret', {
+      algorithm: 'RS256',
+      subject: 'any_id',
+      expiresIn: '1d'
+    });
+
+    expect(token).toBe('any_token');
+  });
 });
