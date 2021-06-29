@@ -8,6 +8,8 @@
   <img alt="Express Logo" src="https://img.shields.io/badge/Express-v4.17.1-00a0c8?logo=express&labelColor=fff&logoColor=000">&nbsp;&nbsp;
   <img alt="Prisma Logo" src="https://img.shields.io/badge/Prisma-v2.25.0-c80a50?logo=prisma&labelColor=fff&logoColor=000">&nbsp;&nbsp;
   <img alt="Docker Logo" src="https://img.shields.io/badge/Docker & Docker Compose-latest-00a0c8?logo=docker&labelColor=fff">
+  &nbsp;&nbsp;
+  <img alt="Coverage Report" src="https://coveralls.io/repos/github/lemuelZara/appreciate/badge.svg?branch=main">&nbsp;&nbsp;
 
 <p align="center">Appreciating people for the good things they do.</p>
 
