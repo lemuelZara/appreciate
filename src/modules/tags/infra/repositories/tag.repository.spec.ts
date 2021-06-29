@@ -18,8 +18,8 @@ const makeFakeFindAllTags = (): Tag[] => [
   {
     id: 'any_id',
     name: 'any_name',
-    createdAt: new Date(),
-    updatedAt: new Date()
+    createdAt,
+    updatedAt
   }
 ];
 
