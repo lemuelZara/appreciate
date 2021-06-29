@@ -3,13 +3,12 @@
 </h1>
 
 <p align="center">
-  <img alt="Node.js Logo" src="https://img.shields.io/badge/Node.js-latest-00a0c8?logo=node.js&labelColor=fff">&nbsp;&nbsp;
-  <img alt="TypeScript Logo" src="https://img.shields.io/badge/TypeScript-latest-c80a50?logo=typescript&labelColor=fff">&nbsp;&nbsp;
-  <img alt="Express Logo" src="https://img.shields.io/badge/Express-v4.17.1-00a0c8?logo=express&labelColor=fff&logoColor=000">&nbsp;&nbsp;
-  <img alt="Prisma Logo" src="https://img.shields.io/badge/Prisma-v2.25.0-c80a50?logo=prisma&labelColor=fff&logoColor=000">&nbsp;&nbsp;
-  <img alt="Docker Logo" src="https://img.shields.io/badge/Docker & Docker Compose-latest-00a0c8?logo=docker&labelColor=fff">
-  &nbsp;&nbsp;
-  <img alt="Coverage Report" src="https://coveralls.io/repos/github/lemuelZara/appreciate/badge.svg?branch=main">&nbsp;&nbsp;
+  <img alt="Node.js Logo" src="https://img.shields.io/badge/Node.js-latest-00143c?logo=node.js&labelColor=fff">&nbsp;&nbsp;
+  <img alt="TypeScript Logo" src="https://img.shields.io/badge/TypeScript-latest-00143c?logo=typescript&labelColor=fff">&nbsp;&nbsp;
+  <img alt="Express Logo" src="https://img.shields.io/badge/Express-v4.17.1-00143c?logo=express&labelColor=fff&logoColor=000">&nbsp;&nbsp;
+  <img alt="Prisma Logo" src="https://img.shields.io/badge/Prisma-v2.25.0-00143c?logo=prisma&labelColor=fff&logoColor=000">&nbsp;&nbsp;
+  <img alt="Docker Logo" src="https://img.shields.io/badge/Docker & Docker Compose-latest-00143c?logo=docker&labelColor=fff">&nbsp;&nbsp;
+  <img alt="Coverage Report" src="https://img.shields.io/coveralls/github/lemuelZara/appreciate?logo=coveralls&labelColor=fff&logoColor=354a57">
 
 <p align="center">Appreciating people for the good things they do.</p>
 
