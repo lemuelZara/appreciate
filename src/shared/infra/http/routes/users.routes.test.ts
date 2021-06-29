@@ -1,4 +1,5 @@
 import httpRequest from 'supertest';
+
 import auth from '~config/auth';
 
 import { User } from '~modules/users/entities';

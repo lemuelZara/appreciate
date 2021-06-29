@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { inject, injectable } from 'tsyringe';
 
 import { UserRepositoryProtocols } from '~modules/users/infra/protocols';
-import { BadRequestException } from '~shared/errors/http-errors';
+import { UnauthorizedException } from '~shared/errors/http-errors';
 
 @injectable()
 export class EnsureAdminMiddleware {
@@ -20,7 +20,7 @@ export class EnsureAdminMiddleware {
     const user = await this.userRepository.findById(id);
 
     if (!user?.admin) {
-      throw new BadRequestException('User is not admin!');
+      throw new UnauthorizedException('User is not admin!');
     }
 
     return next();

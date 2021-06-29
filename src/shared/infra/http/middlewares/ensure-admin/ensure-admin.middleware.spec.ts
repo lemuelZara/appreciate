@@ -6,7 +6,7 @@ import { UserRepositoryProtocols } from '~modules/users/infra/protocols';
 import { UserRepository } from '~modules/users/infra/repositories';
 import { User } from '~modules/users/entities';
 
-import { BadRequestException } from '~shared/errors/http-errors';
+import { UnauthorizedException } from '~shared/errors/http-errors';
 
 const createdAt = new Date();
 const updatedAt = new Date();
@@ -65,7 +65,7 @@ describe('EnsureAdmindMiddleware', () => {
 
     await expect(
       middleware.handle(httpRequest, httpResponse, next)
-    ).rejects.toEqual(new BadRequestException('User is not admin!'));
+    ).rejects.toEqual(new UnauthorizedException('User is not admin!'));
   });
 
   test('should be authorized', async () => {

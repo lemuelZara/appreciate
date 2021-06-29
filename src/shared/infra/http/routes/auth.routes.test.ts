@@ -4,10 +4,7 @@ import auth from '~config/auth';
 
 import { BCryptProvider } from '~shared/container/providers/crypto/bcrypt';
 import { JsonWebTokenProvider } from '~shared/container/providers/jwt/impl/json-web-token.provider';
-import {
-  BadRequestException,
-  UnauthorizedException
-} from '~shared/errors/http-errors';
+import { BadRequestException } from '~shared/errors/http-errors';
 import { prisma } from '~shared/infra/database/prisma/client';
 import { app } from '~shared/infra/http/app';
 
