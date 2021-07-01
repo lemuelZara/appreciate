@@ -1,4 +1,4 @@
-import { AddTagUseCase } from './add-tag.usecase';
+import { AddTagUseCase } from '~modules/tags/usecases/add-tag/add-tag.usecase';
 
 import { TagRepositoryProtocols } from '~modules/tags/infra/protocols';
 import { TagRepository } from '~modules/tags/infra/repositories';

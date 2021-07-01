@@ -1,4 +1,4 @@
-import { UserRepository } from './user.repository';
+import { UserRepository } from '~modules/users/infra/repositories';
 
 import { User } from '~modules/users/entities';
 

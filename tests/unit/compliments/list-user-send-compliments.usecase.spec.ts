@@ -1,4 +1,4 @@
-import { ListUserReceiveComplimentsUseCase } from './list-user-receive-compliments.usecase';
+import { ListUserSendComplimentsUseCase } from '~modules/compliments/usecases/list-user-send-compliments/list-user-send-compliments.usecase';
 
 import { ComplimentRepositoryProtocols } from '~modules/compliments/infra/protocols';
 import { ComplimentRepository } from '~modules/compliments/infra/repositories';
@@ -11,9 +11,9 @@ import { User } from '~modules/users/entities';
 const createdAt = new Date();
 const updatedAt = new Date();
 
-const makeFakeUserReceiveCompliments = (): (Compliment & {
+const makeFakeUserSendCompliments = (): (Compliment & {
   tag: Tag;
-  userSender: User;
+  userReceiver: User;
 })[] => [
   {
     id: 'valid_id',
@@ -29,7 +29,7 @@ const makeFakeUserReceiveCompliments = (): (Compliment & {
       createdAt,
       updatedAt
     },
-    userSender: {
+    userReceiver: {
       id: 'valid_id',
       name: 'valid_name',
       email: 'valid_email',
@@ -41,36 +41,34 @@ const makeFakeUserReceiveCompliments = (): (Compliment & {
   }
 ];
 
-describe('ListUserReceiveComplimentsUseCase', () => {
-  let usecase: ListUserReceiveComplimentsUseCase;
+describe('ListUserSendComplimentsUseCase', () => {
+  let usecase: ListUserSendComplimentsUseCase;
   let repository: ComplimentRepositoryProtocols;
 
   beforeEach(() => {
     repository = new ComplimentRepository();
-    usecase = new ListUserReceiveComplimentsUseCase(repository);
+    usecase = new ListUserSendComplimentsUseCase(repository);
 
-    repository.findUserReceiveCompliments = jest.fn();
+    repository.findUserSendCompliments = jest.fn();
   });
 
-  test('should be called findUserReceiveCompliments with correct params', async () => {
+  test('should be called findUserSendCompliments with correct params', async () => {
     jest
-      .spyOn(repository, 'findUserReceiveCompliments')
-      .mockResolvedValueOnce(makeFakeUserReceiveCompliments());
+      .spyOn(repository, 'findUserSendCompliments')
+      .mockResolvedValueOnce(makeFakeUserSendCompliments());
 
     await usecase.execute({ userId: 'any_id' });
 
-    expect(repository.findUserReceiveCompliments).toHaveBeenCalledWith(
-      'any_id'
-    );
+    expect(repository.findUserSendCompliments).toHaveBeenCalledWith('any_id');
   });
 
-  test('should be return success user received compliments data', async () => {
+  test('should be return success user send compliments data', async () => {
     jest
-      .spyOn(repository, 'findUserReceiveCompliments')
-      .mockResolvedValueOnce(makeFakeUserReceiveCompliments());
+      .spyOn(repository, 'findUserSendCompliments')
+      .mockResolvedValueOnce(makeFakeUserSendCompliments());
 
     const compliments = await usecase.execute({ userId: 'any_id' });
 
-    expect(compliments).toEqual(makeFakeUserReceiveCompliments());
+    expect(compliments).toEqual(makeFakeUserSendCompliments());
   });
 });

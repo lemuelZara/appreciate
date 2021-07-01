@@ -15,6 +15,19 @@ describe('Tags', () => {
   afterEach(async () => disconnectDB());
 
   describe('POST /tags', () => {
+    test('should not be able create tag if token is missing', async () => {
+      const httpResponse = await httpRequest(app)
+        .get('/tags')
+        .expect(401)
+        .send();
+
+      const error = new UnauthorizedException(
+        'Authentication token is missing!'
+      );
+
+      expect(httpResponse.body.content).toStrictEqual(error.response);
+    });
+
     test('should not be able create tag if name not provided', async () => {
       const tag = TagFactory.build();
       tag.name = '';
@@ -96,6 +109,19 @@ describe('Tags', () => {
   });
 
   describe('GET /tags', () => {
+    test('should not be able list all tags if token is missing', async () => {
+      const httpResponse = await httpRequest(app)
+        .get('/tags')
+        .expect(401)
+        .send();
+
+      const error = new UnauthorizedException(
+        'Authentication token is missing!'
+      );
+
+      expect(httpResponse.body.content).toStrictEqual(error.response);
+    });
+
     test('should be able list all tags', async () => {
       const userAdmin = await UserFactory.create({ admin: true });
 

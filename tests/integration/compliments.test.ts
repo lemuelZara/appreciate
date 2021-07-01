@@ -1,7 +1,10 @@
 import httpRequest from 'supertest';
 import faker from 'faker';
 
-import { BadRequestException } from '~shared/errors/http-errors';
+import {
+  BadRequestException,
+  UnauthorizedException
+} from '~shared/errors/http-errors';
 import { app } from '~shared/infra/http/app';
 import {
   createToken,
@@ -17,6 +20,19 @@ describe('Compliments', () => {
   afterEach(async () => disconnectDB());
 
   describe('POST /compliments', () => {
+    test('should not be able create compliment if token is missing', async () => {
+      const httpResponse = await httpRequest(app)
+        .post('/compliments')
+        .expect(401)
+        .send();
+
+      const error = new UnauthorizedException(
+        'Authentication token is missing!'
+      );
+
+      expect(httpResponse.body.content).toStrictEqual(error.response);
+    });
+
     test('should not be able to create a new compliment if userSender and userReceiver is the same user', async () => {
       const tag = await TagFactory.create();
       const userSender = await UserFactory.create({ admin: true });
@@ -91,6 +107,19 @@ describe('Compliments', () => {
   });
 
   describe('GET /compliments/users/receive', () => {
+    test('should not be able list received compliments if token is missing', async () => {
+      const httpResponse = await httpRequest(app)
+        .get('/compliments/users/receive')
+        .expect(401)
+        .send();
+
+      const error = new UnauthorizedException(
+        'Authentication token is missing!'
+      );
+
+      expect(httpResponse.body.content).toStrictEqual(error.response);
+    });
+
     test('should be able list received compliments', async () => {
       const userSender = await UserFactory.create({ admin: true });
       const userReceiver = await UserFactory.create({ admin: true });
@@ -137,6 +166,19 @@ describe('Compliments', () => {
   });
 
   describe('GET /compliments/users/send', () => {
+    test('should not be able list sent compliments if token is missing', async () => {
+      const httpResponse = await httpRequest(app)
+        .get('/compliments/users/send')
+        .expect(401)
+        .send();
+
+      const error = new UnauthorizedException(
+        'Authentication token is missing!'
+      );
+
+      expect(httpResponse.body.content).toStrictEqual(error.response);
+    });
+
     test('should be able list sent compliments', async () => {
       const userSender = await UserFactory.create({ admin: true });
       const userReceiver = await UserFactory.create({ admin: true });

@@ -1,4 +1,4 @@
-import { ComplimentRepository } from './compliment.repository';
+import { ComplimentRepository } from '~modules/compliments/infra/repositories';
 
 import { Compliment } from '~modules/compliments/entities';
 import { AddComplimentDTO } from '~modules/compliments/dtos';

@@ -1,4 +1,4 @@
-import { TagRepository } from './tag.repository';
+import { TagRepository } from '~modules/tags/infra/repositories';
 
 import { Tag } from '~modules/tags/entities';
 

@@ -1,4 +1,4 @@
-import { ListUsersUseCase } from './list-users.usecase';
+import { ListUsersUseCase } from '~modules/users/usecases/list-users/list-users.usecase';
 
 import { User } from '~modules/users/entities';
 import { UserRepositoryProtocols } from '~modules/users/infra/protocols';

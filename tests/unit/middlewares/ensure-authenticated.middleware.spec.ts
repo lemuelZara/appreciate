@@ -1,6 +1,6 @@
 import { Request } from 'express';
 
-import { EnsureAuthenticatedMiddleware } from './ensure-authenticated.middleware';
+import { EnsureAuthenticatedMiddleware } from '~shared/infra/http/middlewares/ensure-authenticated/ensure-authenticated.middleware';
 
 import { JWTProtocols } from '~shared/container/providers/jwt/protocols';
 import { JsonWebTokenProvider } from '~shared/container/providers/jwt/impl/json-web-token.provider';

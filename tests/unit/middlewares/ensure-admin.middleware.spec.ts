@@ -1,6 +1,6 @@
 import { Request } from 'express';
 
-import { EnsureAdminMiddleware } from './ensure-admin.middleware';
+import { EnsureAdminMiddleware } from '~shared/infra/http/middlewares/ensure-admin/ensure-admin.middleware';
 
 import { UserRepositoryProtocols } from '~modules/users/infra/protocols';
 import { UserRepository } from '~modules/users/infra/repositories';

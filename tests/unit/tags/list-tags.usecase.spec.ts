@@ -1,4 +1,4 @@
-import { ListTagsUseCase } from './list-tags.usecase';
+import { ListTagsUseCase } from '~modules/tags/usecases/list-tags/list-tags.usecase';
 
 import { TagRepositoryProtocols } from '~modules/tags/infra/protocols';
 import { TagRepository } from '~modules/tags/infra/repositories';

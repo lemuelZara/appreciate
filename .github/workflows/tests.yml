@@ -1,4 +1,4 @@
-name: "CI: Unit Tests"
+name: "CI: Tests"
 
 on: [push]
 
@@ -6,6 +6,40 @@ env:
   DATABASE_URL: postgresql://postgres:docker@localhost:5432/appreciate?schema=public
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/appreciate
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+      - run: npm ci
+      - run: npm run build
+      # run the migration in the test database
+      - run: npm run db:push
+      - run: npm run test
+
   check-tests:
     runs-on: ubuntu-20.04
     steps:

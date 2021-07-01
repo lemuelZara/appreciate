@@ -1,4 +1,4 @@
-import { AddComplimentUseCase } from './add-compliment.usecase';
+import { AddComplimentUseCase } from '~modules/compliments/usecases/add-compliment/add-compliment.usecase';
 
 import { AddComplimentDTO } from '~modules/compliments/dtos';
 import { Compliment } from '~modules/compliments/entities';

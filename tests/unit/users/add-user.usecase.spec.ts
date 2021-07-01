@@ -1,4 +1,4 @@
-import { AddUserUseCase } from './add-user.usecase';
+import { AddUserUseCase } from '~modules/users/usecases/add-user/add-user.usecase';
 
 import { UserRepositoryProtocols } from '~modules/users/infra/protocols';
 import { UserRepository } from '~modules/users/infra/repositories';

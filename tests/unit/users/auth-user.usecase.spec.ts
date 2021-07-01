@@ -1,4 +1,4 @@
-import { AuthUserUseCase } from './auth-user.usecase';
+import { AuthUserUseCase } from '~modules/users/usecases/auth-user/auth-user.usecase';
 
 import { User } from '~modules/users/entities';
 import { UserRepositoryProtocols } from '~modules/users/infra/protocols';

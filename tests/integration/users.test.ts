@@ -1,11 +1,13 @@
 import httpRequest from 'supertest';
 
 import { resetDB, disconnectDB } from './utils';
-import { UserFactory } from './factories/user';
+import { UserFactory, createToken } from './factories';
 
 import { app } from '~shared/infra/http/app';
-import { BadRequestException } from '~shared/errors/http-errors';
-import { createToken } from './factories/jwt';
+import {
+  BadRequestException,
+  UnauthorizedException
+} from '~shared/errors/http-errors';
 
 describe('Users', () => {
   afterEach(async () => resetDB());
@@ -84,6 +86,19 @@ describe('Users', () => {
   });
 
   describe('GET /users', () => {
+    test('should not be able list all users if token is missing', async () => {
+      const httpResponse = await httpRequest(app)
+        .get('/users')
+        .expect(401)
+        .send();
+
+      const error = new UnauthorizedException(
+        'Authentication token is missing!'
+      );
+
+      expect(httpResponse.body.content).toStrictEqual(error.response);
+    });
+
     test('should be able list all users', async () => {
       const users = await Promise.all([
         await UserFactory.create(),
