@@ -1,5 +1,5 @@
 import config from './jest.config';
 
-config.testMatch = ['**/auth?(*.)+(test).ts'];
+config.testMatch = ['**/?(*.)+(test).ts'];
 
 export default config;
