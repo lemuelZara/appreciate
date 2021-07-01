@@ -2,52 +2,37 @@ name: "CI: Tests"
 
 on: [push]
 
-env:
-  DATABASE_URL: postgresql://postgres:docker@localhost:5432/appreciate?schema=public
-
 jobs:
-  test:
+  check-tests:
     runs-on: ubuntu-latest
-    # Service containers to run with `container-job`
+    # Service containers to run with 'container-job'
     services:
       # Label used to access the service container
       postgres:
-        # Docker Hub image
         image: postgres
-        # Provide the password for postgres
+        #Provide the password for postgres
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: dog
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
         ports:
-          # Maps tcp port 5432 on service container to the host
+          # Maps TCP port 5432 on service container to the host
           - 5432:5432
+
     env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/appreciate
+      DATABASE_URL: postgres://postgres:dog@localhost:5432/appreciate
+      JWT_ALGORITHM: ${{ secrets.JWT_ALGORITHM }}
+      JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+      JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+      TOKEN_EXPIRATION_TIME: ${{ secrets.TOKEN_EXPIRATION_TIME }}
 
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
-        with:
-          node-version: '14.x'
-      - run: npm ci
-      - run: npm run build
-      # run the migration in the test database
-      - run: npm run db:push
-      - run: npm run test
-
-  check-tests:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
         with:
           node-version: '16'
 
@@ -62,15 +47,13 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn
-
       - name: Install packages
         run: yarn install --prefer-offline
 
-      - name: Run Tests
-        run: yarn test
-
-      - name: Run Test Coverage
-        run: yarn test:cov
+      - run: yarn build
+      # Run the migration in the test database
+      - run: yarn db:push
+      - run: yarn test:cov
 
       - name: Coveralls Report
         uses: coverallsapp/github-action@v1.1.2
