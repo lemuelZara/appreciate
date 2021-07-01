@@ -3,7 +3,7 @@ name: "CI: Unit Tests"
 on: [push]
 
 jobs:
-  check-unit-tests:
+  check-tests:
     runs-on: ubuntu-20.04
     steps:
       - name: Check out repository
@@ -29,11 +29,8 @@ jobs:
       - name: Install packages
         run: yarn install --prefer-offline
 
-      - name: Run Unit Tests
-        run: yarn test:unit
-
-      - name: Run Integration Tests
-        run: yarn test:integration
+      - name: Run Tests
+        run: yarn test
 
       - name: Run Test Coverage
         run: yarn test:cov

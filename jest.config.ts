@@ -21,7 +21,6 @@ export default {
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
     'src/modules/**/usecases/**/*.usecase.ts',
-    'src/modules/**/usecases/**/*.controller.ts',
     'src/modules/**/repositories/*.ts',
     'src/shared/**/*.routes.ts'
   ],
