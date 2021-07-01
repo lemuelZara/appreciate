@@ -9,15 +9,33 @@ import {
 import { app } from '~shared/infra/http/app';
 import { TagFactory, createToken, UserFactory } from './factories';
 
-const tag = TagFactory.build();
-
 describe('Tags', () => {
   afterEach(async () => resetDB());
 
   afterEach(async () => disconnectDB());
 
   describe('POST /tags', () => {
+    test('should not be able create tag if name not provided', async () => {
+      const tag = TagFactory.build();
+      tag.name = '';
+
+      const userAdmin = await UserFactory.create({ admin: true });
+
+      const token = createToken(userAdmin.id);
+
+      const httpResponse = await httpRequest(app)
+        .post('/tags')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(400)
+        .send(tag);
+
+      const error = new BadRequestException('Name not provided!');
+
+      expect(httpResponse.body.content).toStrictEqual(error.response);
+    });
+
     test('should not be able create duplicated tag', async () => {
+      const tag = TagFactory.build();
       const userAdmin = await UserFactory.create({ admin: true });
 
       const token = createToken(userAdmin.id);
@@ -40,6 +58,7 @@ describe('Tags', () => {
     });
 
     test('should not be authorized to create a new tag', async () => {
+      const tag = TagFactory.build();
       const userNotAdmin = await UserFactory.create({ admin: false });
 
       const token = createToken(userNotAdmin.id);
@@ -56,6 +75,7 @@ describe('Tags', () => {
     });
 
     test('should be able create a new tag', async () => {
+      const tag = TagFactory.build();
       const userAdmin = await UserFactory.create({ admin: true });
 
       const token = createToken(userAdmin.id);

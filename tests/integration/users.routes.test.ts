@@ -7,16 +7,30 @@ import { app } from '~shared/infra/http/app';
 import { BadRequestException } from '~shared/errors/http-errors';
 import { createToken } from './factories/jwt';
 
-const userAdmin = UserFactory.build({ admin: true });
-const userNotAdmin = UserFactory.build({ admin: false });
-
 describe('Users', () => {
   afterEach(async () => resetDB());
 
   afterEach(async () => disconnectDB());
 
   describe('POST /users', () => {
+    test('should not be able create userif email is not provided', async () => {
+      const userAdmin = UserFactory.build({ admin: true });
+      userAdmin.email = '';
+
+      const httpResponse = await httpRequest(app)
+        .post('/users')
+        .expect(400)
+        .send(userAdmin);
+
+      const error = new BadRequestException('Email is not provided!');
+
+      expect(httpResponse.body.content).toStrictEqual(error.response);
+    });
+
     test('should not be able create duplicated user', async () => {
+      const userAdmin = UserFactory.build({ admin: true });
+      const userNotAdmin = UserFactory.build({ admin: false });
+
       await httpRequest(app).post('/users').expect(201).send(userNotAdmin);
 
       const httpResponse = await httpRequest(app)
@@ -30,6 +44,8 @@ describe('Users', () => {
     });
 
     test('should be able create a new admin user', async () => {
+      const userAdmin = UserFactory.build({ admin: true });
+
       const httpResponse = await httpRequest(app)
         .post('/users')
         .expect(201)
@@ -47,6 +63,8 @@ describe('Users', () => {
     });
 
     test('should be able create a new non admin user', async () => {
+      const userNotAdmin = UserFactory.build({ admin: false });
+
       const httpResponse = await httpRequest(app)
         .post('/users')
         .expect(201)
