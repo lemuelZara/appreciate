@@ -7,8 +7,7 @@ import {
   UnauthorizedException
 } from '~shared/errors/http-errors';
 import { app } from '~shared/infra/http/app';
-import { TagFactory } from './factories/tag';
-import { createToken, UserFactory } from './factories';
+import { TagFactory, createToken, UserFactory } from './factories';
 
 const tag = TagFactory.build();
 

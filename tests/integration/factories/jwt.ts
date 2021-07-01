@@ -8,3 +8,7 @@ export function createToken(id: string): string {
     expiresIn: auth.expiresIn
   });
 }
+
+export function decodeToken(token: string): { sub: string } {
+  return new JsonWebTokenProvider().decodeToken(token, auth.publicKey);
+}
