@@ -1,4 +1,5 @@
 import httpRequest from 'supertest';
+import faker from 'faker';
 
 import { resetDB, disconnectDB } from './utils';
 
@@ -15,6 +16,22 @@ describe('Tags', () => {
   afterEach(async () => disconnectDB());
 
   describe('POST /tags', () => {
+    test('should not be authorized to create a new tag if user is null', async () => {
+      const tag = TagFactory.build();
+
+      const token = createToken(faker.datatype.uuid());
+
+      const httpResponse = await httpRequest(app)
+        .post('/tags')
+        .set('Authorization', `Bearer ${token}`)
+        .expect(401)
+        .send(tag);
+
+      const error = new UnauthorizedException('User is not admin!');
+
+      expect(httpResponse.body.content).toStrictEqual(error.response);
+    });
+
     test('should not be able create tag if token is missing', async () => {
       const httpResponse = await httpRequest(app)
         .get('/tags')

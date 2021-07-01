@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 
-import { BCryptProvider } from './bcrypt.provider';
+import { BCryptProvider } from '~shared/container/providers/crypto/bcrypt/bcrypt.provider';
 
 jest.mock('bcrypt', () => ({
   async hash(): Promise<string> {

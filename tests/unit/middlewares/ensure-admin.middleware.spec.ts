@@ -60,8 +60,9 @@ describe('EnsureAdmindMiddleware', () => {
 
   test('should be throw if user id is empty', async () => {
     const httpRequest = makeFakeHttpRequest();
-
     httpRequest.user.id = '';
+
+    jest.spyOn(repository, 'findById').mockResolvedValueOnce(null);
 
     await expect(
       middleware.handle(httpRequest, httpResponse, next)

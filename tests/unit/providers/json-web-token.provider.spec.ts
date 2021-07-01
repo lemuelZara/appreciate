@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-import { JsonWebTokenProvider } from './json-web-token.provider';
+import { JsonWebTokenProvider } from '~shared/container/providers/jwt/impl/json-web-token.provider';
 
 jest.mock('jsonwebtoken', () => ({
   sign(): string {
