@@ -2,6 +2,9 @@ name: "CI: Unit Tests"
 
 on: [push]
 
+env:
+  DATABASE_URL: postgresql://postgres:docker@localhost:5432/appreciate?schema=public
+
 jobs:
   check-tests:
     runs-on: ubuntu-20.04
